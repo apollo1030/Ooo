@@ -1,0 +1,59 @@
+specVersion: 0.0.2
+description: Olympus Subgraph(Mainnet-Fantom)
+repository: https://github.com/apollo1030/Ooo.git
+schema:
+  file: ./schema.graphql
+dataSources:
+  #Staking Contract
+  - kind: ethereum/contract
+    name: OlympusStaking
+    network: fantom
+    source:
+      address: '0x02eE802a7533eae6861Bb18fC49795AA5A68B778'
+      abi: OlympusStaking
+      startBlock: 20770209
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DailyBond
+        - Ohmie
+        - OhmieBalance
+        - Deposit
+        - Redemption
+        - Stake
+        - Unstake
+        - Rebase
+        - DailyStakingReward
+        - Transaction
+        - Token
+        - ProtocolMetric
+        - ContractInfo
+        - Aux
+        - BondDiscount
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: stake(uint256,address)
+          handler: handleStake
+        - function: unstake(uint256,bool)
+          handler: handleUnstake
+      file: ./src/mapping.ts
